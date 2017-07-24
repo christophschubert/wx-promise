@@ -39,13 +39,23 @@ const setStorage = (key, value) => new Promise(
   (resolve, reject) => {
     wx.setStorage({
       key: key,
-      value: value,
+      data: value,
       success: res => { resolve(value); },
       fail: reject
     });
   }
 );
 
+
+const saveImage = (path) => new Promise(
+  (resolve, reject) => {
+    wx.saveFile({
+      tempFilePath: path,
+      success: (res) => resolve(res.savedFilePath),
+      fail: reject
+    })
+  }
+);
 
 //resolve gets data and headers
 const request = (options) => new Promise (
@@ -86,6 +96,7 @@ const requestData = (options) => new Promise (
   }
 );
 
+const getURL = url => requestData({url: url});
 
 
 module.exports = {
@@ -98,6 +109,7 @@ module.exports = {
   getSystemInfo: pro.getSystemInfo,
   getUserInfo: pro.getUserInfo,
   login: pro.login,
+  saveImage: saveImage,
   navigateTo: pro.navigateTo,
   removeStorage: pro.removeStorage,
   request: request,
